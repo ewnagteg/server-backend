@@ -23,7 +23,7 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        source: "{src/*,package*.json}"
+        source: "{src/**,package*.json}"
         target: "${{ secrets.SERVER_DIR }}"
 
     - name: Restart backend (via SSH)
