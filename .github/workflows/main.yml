@@ -16,10 +16,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '18'
-    - name: Test SSH connection
-      run: |
-        echo "${{ secrets.SSH_KEY }}" > temp_key && chmod 600 temp_key
-        ssh -vvv -i temp_key -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} echo "SSH Connected"
+    - run: npm install -g pm2
       env:
         SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
         SSH_HOST: ${{ secrets.SSH_HOST }}
@@ -40,6 +37,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         script: |
+          export PATH=$PATH:/root/.nvm/versions/node/v18.20.5/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
           cd ${{ secrets.SERVER_DIR }}
           npm install
           pm2 restart server-backend || pm2 start src/index.js --name server-backend
