@@ -18,7 +18,8 @@ jobs:
         node-version: '18'
     - name: Test SSH connection
       run: |
-        ssh -vvv -i <(echo "${{ secrets.SSH_KEY }}") ${SSH_USERNAME}@${SSH_HOST} echo "SSH Connected"
+        echo "${{ secrets.SSH_KEY }}" > temp_key && chmod 600 temp_key
+        ssh -vvv -i temp_key -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} echo "SSH Connected"
       env:
         SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
         SSH_HOST: ${{ secrets.SSH_HOST }}
