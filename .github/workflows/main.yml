@@ -1,0 +1,38 @@
+name: Deploy to Linode
+
+on:
+  push:
+    branches: [dev-stage2]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Upload backend code
+      uses: appleboy/scp-action@v0.1.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        source: "{src/*,package*.json}"
+        target: "${{ secrets.SERVER_DIR }}"
+
+    - name: Restart backend (via SSH)
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd ${{ secrets.SERVER_DIR }}
+          npm install
+          pm2 restart server-backend || pm2 start src/index.js --name server-backend
