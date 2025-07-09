@@ -40,4 +40,5 @@ jobs:
           export PATH=$PATH:/root/.nvm/versions/node/v18.20.5/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
           cd ${{ secrets.SERVER_DIR }}
           npm install
+          node .\migrate.js
           pm2 restart server-backend || pm2 start src/index.js --name server-backend
