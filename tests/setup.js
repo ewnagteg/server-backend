@@ -3,11 +3,15 @@ import { jest } from '@jest/globals';
 process.env.UPLOAD_API_KEY = 'test-api-key';
 
 
-
-jest.mock('../src/middleware/auth.js', () => ({
-    checkJwt: (req, res, next) => next()
+jest.unstable_mockModule('../src/middleware/auth.js', () => ({
+  checkJwt: (req, res, next) => {
+    req.auth = { sub: 'mock-user-id' };
+    next();
+  }
 }));
 
-jest.mock('../src/middleware/apiKey.js', () => ({
-    checkApiKey: (req, res, next) => next()
+jest.unstable_mockModule('../src/middleware/apiKey.js', () => ({
+  checkApiKey: (req, res, next) => {
+    next();
+  }
 }));

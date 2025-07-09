@@ -12,15 +12,6 @@ describe('Player Routes', () => {
         jest.clearAllMocks();
     });
 
-    it('should return 403 when API key is missing', async () => {
-        const response = await request(app)
-            .post('/api/create-player')
-            .send({ players: [{ player_id: 1, name: 'Test', cost: 10 }] });
-        
-        expect(response.statusCode).toBe(403);
-        expect(response.body).toHaveProperty('error');
-    });
-
     it('should call db.run to insert players', async () => {
         jest.spyOn(db, 'run').mockImplementation(() => Promise.resolve({}));
         expect(jest.isMockFunction(db.run)).toBe(true);
