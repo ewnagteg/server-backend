@@ -8,6 +8,7 @@ import playerRoutes from './routes/api/playerRoutes.js';
 import playerStatsRoutes from './routes/api/playerStatsRoutes.js';
 import teamRoutes from './routes/api/teamRoutes.js';
 import notesRoutes from './routes/api/notesRoutes.js';
+import groupsRoutes from './routes/api/groupsRoutes.js';
 
 const app = express();
 
@@ -34,5 +35,6 @@ app.use('/api', playerRoutes);
 app.use('/api', playerStatsRoutes);
 app.use('/api', teamRoutes);
 app.use('/api', notesRoutes);
+app.use('/api', groupsRoutes);
 
 export default app;
