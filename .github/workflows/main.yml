@@ -34,13 +34,13 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         source: |
-          src/
-          tests/
-          .sequelizerc
-          jest.config.js
-          migrate.js
-          package.json
-          package-lock.json
+          ./src/**
+          ./tests/**
+          ./.sequelizerc
+          ./jest.config.js
+          ./migrate.js
+          ./package.json
+          ./package-lock.json
         target: "${{ secrets.SERVER_DIR }}"
         debug: true
         rm: false
