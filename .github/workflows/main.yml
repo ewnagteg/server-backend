@@ -34,8 +34,8 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         source: |
-          src/**
-          tests/**
+          src/
+          tests/
           .sequelizerc
           jest.config.js
           migrate.js
