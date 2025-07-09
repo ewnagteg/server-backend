@@ -27,7 +27,14 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        source: "src/**"
+        source: |
+          src/**
+          tests/**
+          .sequelizerc
+          jest.config.js
+          migrate.js
+          package.json
+          package-lock.json
         target: "${{ secrets.SERVER_DIR }}"
 
     - name: Restart backend (via SSH)
