@@ -8,4 +8,6 @@ router.post('/groups/create', checkJwt, groupsController.createGroup);
 
 router.post('/groups/join', checkJwt, groupsController.joinGroup);
 
+router.get('/groups/get', checkJwt, groupsController.getUserGroup);
+
 export default router;

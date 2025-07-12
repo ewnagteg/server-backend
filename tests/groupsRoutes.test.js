@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { expect, jest } from '@jest/globals';
 
 
 process.env.UPLOAD_API_KEY = 'test-api-key';
@@ -8,7 +8,8 @@ import request from 'supertest';
 const { default: app } = await import('../src/server.js');
 import Groups from '../src/models/groups.js';
 import UserGroup from '../src/models/usergroup.js';
-
+import '../src/models/associations.js';
+import sequelize from '../src/database/sequelize.js';
 
 describe('Group Routes', () => {
 
@@ -59,6 +60,24 @@ describe('Group Routes', () => {
         expect(UserGroup.create).toHaveBeenCalledWith({
             userid: expect.any(String),
             groupid: 1,
+        });
+    });
+
+    it('should get a group by userid', async () => {
+        // we mocked checkJwt so itll return a mock user id which should be seeded in db
+        const response = await request(app)
+            .get('/api/groups/get')
+            .send();
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toEqual({
+            "group": {
+                "id": 1,
+                "inviteNumber": "1234567890",
+                "name": "Test Group 1",
+                "owner": "user123",
+            },
+            success: true,
         });
     });
 });
