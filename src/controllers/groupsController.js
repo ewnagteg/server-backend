@@ -1,6 +1,6 @@
 import UserGroup from '../models/usergroup.js';
 import Groups from '../models/groups.js';
-
+import '../models/associations.js';
 
 export async function createGroup(req, res) {
     try {
@@ -28,5 +28,31 @@ export async function joinGroup(req, res) {
     } catch (err) {
         console.error('Failed to join group:', err);
         res.status(500).json({ error: 'Failed to join group' });
+    }
+}
+
+export async function getUserGroup(req, res) {
+    try {
+        const userId = req.auth.sub;
+        
+        const userGroup = await UserGroup.findOne({
+            where: { userid: userId },
+            include: {
+                model: Groups,
+                as: 'Group',
+            },
+        });
+        
+        if (!userGroup) {
+            return res.json({ success: true, group: null });
+        }
+        
+        res.json({ 
+            success: true, 
+            group: userGroup.Group
+        });
+    } catch (err) {
+        console.error('Failed to get user group:', err);
+        res.status(500).json({ error: 'Failed to get user group' });
     }
 }

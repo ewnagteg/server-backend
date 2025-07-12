@@ -2,7 +2,7 @@ import { Sequelize } from 'sequelize';
 import { Umzug, SequelizeStorage } from 'umzug';
 import path from 'path';
 
-import { fileURLToPath, pathToFileURL } from 'url'; // ← fix here
+import { fileURLToPath, pathToFileURL } from 'url';
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -12,9 +12,15 @@ const sequelize = new Sequelize({
     storage: 'dev.db', // todo fix this to use sequelize config + env file
 });
 
+const [, , command, seed] = process.argv;
+let glob = 'src/migrations/*.js';
+if (seed) {
+    glob = 'src/seeders/*.js';
+}
+
 const umzug = new Umzug({
   migrations: {
-    glob: 'src/migrations/*.js',
+    glob: glob,
     resolve: ({ name, path }) => ({
       name,
       up: async () => {
@@ -31,7 +37,6 @@ const umzug = new Umzug({
   storage: new SequelizeStorage({ sequelize }),
   logger: console,
 });
-const [, , command] = process.argv;
 
 if (command === 'down') {
     console.log('Rolling back latest migration...');

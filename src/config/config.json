@@ -12,5 +12,12 @@
     "database": "dev.db",
     "host": "127.0.0.1",
     "dialect": "sqlite"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "dev.db",
+    "host": "127.0.0.1",
+    "dialect": "sqlite"
   }
 }

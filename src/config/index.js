@@ -6,6 +6,7 @@ export default {
     },
     database: {
       path: process.env.DB_PATH,
+      test: process.env.TEST_PATH
     },
     auth: {
       jwksUri: process.env.JWKS_URI,
@@ -15,4 +16,6 @@ export default {
     api: {
       key: process.env.UPLOAD_API_KEY,
     },
+    env: process.env.ENV,
+    log: process.env.LOG === "TRUE"
 }; 

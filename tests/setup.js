@@ -1,3 +1,4 @@
+import '../src/config/loadEnv.js';
 import { jest } from '@jest/globals';
 
 process.env.UPLOAD_API_KEY = 'test-api-key';
