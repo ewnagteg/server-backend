@@ -24,6 +24,13 @@ describe('Group Routes', () => {
     });
 
     it('should create a new group and return invite number', async () => {
+        await UserGroup.destroy({
+            where: {
+                userid: 'mock-user-id',
+                groupid: 1,
+            },
+        });
+
         const fakeGroup = {
             id: 1,
             owner: 'auth0|abc123',
@@ -71,12 +78,12 @@ describe('Group Routes', () => {
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toEqual({
-            "group": {
+            "groups": [{
                 "id": 1,
                 "inviteNumber": "1234567890",
                 "name": "Test Group 1",
                 "owner": "user123",
-            },
+            }],
             success: true,
         });
     });

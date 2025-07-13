@@ -3,6 +3,7 @@ export default {
     vl: {
         budget: process.env.BUDGET,
         lockTeams: process.env.LOCK_TEAMS === 'TRUE',
+        maxGroups: Number(process.env.MAX_GROUPS)
     },
     database: {
       path: process.env.DB_PATH,
