@@ -4,9 +4,10 @@
 export async function up(queryInterface, Sequelize) {
     await queryInterface.createTable('Groups', {
         id: {
-            allowNull: false,
-            primaryKey: true,
             type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false,
         },
         owner: {
             allowNull: false,

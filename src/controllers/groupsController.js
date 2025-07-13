@@ -16,7 +16,7 @@ export async function createGroup(req, res) {
 
         const group = await Groups.create({
             owner: userId,
-            name: name,
+            name: name ? name : "",
             inviteNumber: inviteNumber
         });
 

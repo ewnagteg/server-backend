@@ -6,6 +6,7 @@ class Groups extends Model { }
 Groups.init({
     id: {
         primaryKey: true,
+        autoIncrement: true,
         type: DataTypes.INTEGER,
     },
     owner: {
