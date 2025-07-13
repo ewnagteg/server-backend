@@ -8,7 +8,13 @@ export async function up(queryInterface, Sequelize) {
             owner: 'user123',
             name: 'Test Group 1',
             inviteNumber: '1234567890',
-        }
+        },
+        {
+            id: 2,
+            owner: 'mock-user-id',
+            name: 'Test Group 2',
+            inviteNumber: '1234567890',
+        },
     ]);
 
     await queryInterface.bulkInsert('UserGroup', [

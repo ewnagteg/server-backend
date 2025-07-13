@@ -87,4 +87,59 @@ describe('Group Routes', () => {
             success: true,
         });
     });
+
+    it('should leave a group by userid and groupId', async () => {
+        const mockDestroy = jest.spyOn(UserGroup, 'destroy').mockResolvedValue(1); 
+
+        const response = await request(app)
+            .post('/api/groups/leave')
+            .send({ groupId: '1'});
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body.success).toEqual(true);
+        expect(mockDestroy).toHaveBeenCalledWith({
+            where: {
+                userid: expect.any(String),
+                groupid: '1',
+            },
+        });
+    });
+    
+    it('should delete a group by userid and groupId', async () => {
+        const mockDestroy = jest.spyOn(Groups, 'destroy').mockResolvedValue(1); 
+        const mockDestroyUg = jest.spyOn(UserGroup, 'destroy').mockResolvedValue(1); 
+        const gid = '2';
+        const response = await request(app)
+            .post('/api/groups/delete')
+            .send({ groupId: gid });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body.success).toEqual(true);
+        expect(mockDestroy).toHaveBeenCalledWith({
+            where: {
+                owner: expect.any(String),
+                id: gid,
+            },
+        });
+        expect(mockDestroyUg).toHaveBeenCalledWith({
+            where: {
+                groupid: gid,
+            },
+        });
+    });
+
+    it('should update a group name by userid, groupId and ', async () => {
+        const mockUpdate = jest.spyOn(Groups, 'update').mockResolvedValue(1); 
+        const name = 'test';
+        const response = await request(app)
+            .post('/api/groups/name')
+            .send({ groupId: '2', name: 'test'});
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body.success).toEqual(true);
+        expect(mockUpdate).toHaveBeenCalledWith(
+            { name },
+            { where: { id: '2' } }
+        );
+    });
 });

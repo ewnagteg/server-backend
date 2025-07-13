@@ -2,6 +2,7 @@ import UserGroup from '../models/usergroup.js';
 import Groups from '../models/groups.js';
 import '../models/associations.js';
 import config from '../config/index.js';
+import { User } from '@auth0/auth0-react';
 
 export async function createGroup(req, res) {
     try {
@@ -20,7 +21,7 @@ export async function createGroup(req, res) {
             inviteNumber: inviteNumber
         });
 
-        await UserGroup.create({ userid: userId, groupid: group.id }); 
+        await UserGroup.create({ userid: userId, groupid: group.id });
 
         res.json({ success: true, groupId: group.id, inviteNumber });
     } catch (err) {
@@ -57,6 +58,72 @@ export async function joinGroup(req, res) {
     }
 }
 
+export async function leaveGroup(req, res) {
+    try {
+        const userId = req.auth.sub;
+        const { groupId } = req.body;
+
+        if (!groupId) {
+            return res.status(404).json({ success: false, error: "Invalid groupId" });
+        }
+        const rows = await UserGroup.destroy({ where: { userid: userId, groupid: groupId } });
+
+        res.json({ success: true, rows: rows });
+    } catch (err) {
+        console.error('Failed to delete group:', err);
+        res.status(500).json({ error: 'Failed to delete group' });
+    }
+}
+
+export async function deleteGroup(req, res) {
+    try {
+        const userId = req.auth.sub;
+        const { groupId } = req.body;
+
+        if (!groupId) {
+            return res.status(404).json({ success: false, error: "Invalid groupId" });
+        }
+        
+        const rows = await Groups.destroy({ where: { owner: userId, id: groupId } });
+
+        if (rows > 0) {
+            await UserGroup.destroy({ where: { groupid: groupId } });
+        }
+        res.json({ success: true });
+
+    } catch (err) {
+        console.error('Failed to delete group:', err);
+        res.status(500).json({ error: 'Failed to delete group' });
+    }
+}
+
+export async function setGroupName(req, res) {
+    try {
+        const userId = req.auth.sub;
+        const { name, groupId } = req.body;
+
+        const group = await Groups.findOne({ where: { id: groupId } });
+        if (!group) {
+            return res.status(404).json({ success: false, error: "Group not found" });
+        }
+
+        if (group.owner !== userId) {
+            return res.status(403).json({ success: false, error: "Unauthorized" });
+        }
+
+        const rows = await Groups.update(
+            { name },
+            { where: { id: groupId } }
+        );
+
+        res.json({ success: true, rows: rows });
+
+    } catch (err) {
+        console.error('Failed to delete group:', err);
+        res.status(500).json({ error: 'Failed to delete group' });
+    }
+}
+
 export async function getUserGroup(req, res) {
     try {
         const userId = req.auth.sub;
@@ -69,7 +136,7 @@ export async function getUserGroup(req, res) {
             },
         });
 
-        if (!userGroups ) {
+        if (!userGroups) {
             return res.json({ success: true, group: null });
         }
 
