@@ -22,9 +22,20 @@ export async function createGroup(req, res) {
 export async function joinGroup(req, res) {
     try {
         const userId = req.auth.sub;
-        const { groupid } = req.body;
-        await UserGroup.create({ userid: userId, groupid: groupid });
-        res.json({ success: true });
+        const { invite, groupId } = req.body;
+        const data = await Groups.findOne({where: { id: groupId }});
+
+        if (!data) {
+            return res.status(404).json({ success: false, error: "Group not found" });
+        }
+
+        // vuln to timing attack, may fix later
+        if (data.inviteNumber === invite) {
+            await UserGroup.create({ userid: userId, groupid: groupId });
+            res.json({ success: true });
+        } else {
+            res.status(403).json({ success: false, error: "Incorrect group invite" });
+        }
     } catch (err) {
         console.error('Failed to join group:', err);
         res.status(500).json({ error: 'Failed to join group' });

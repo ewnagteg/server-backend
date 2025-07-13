@@ -54,12 +54,12 @@ describe('Group Routes', () => {
 
         const response = await request(app)
             .post('/api/groups/join')
-            .send({ groupid: 1 });
+            .send({ groupId: '1', invite: '1234567890' });
 
         expect(response.statusCode).toBe(200);
         expect(UserGroup.create).toHaveBeenCalledWith({
-            userid: expect.any(String),
-            groupid: 1,
+            userid: "mock-user-id",
+            groupid: "1",
         });
     });
 
