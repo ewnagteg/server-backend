@@ -1,15 +1,15 @@
+import './src/config/loadEnv.js';
 import { Sequelize } from 'sequelize';
 import { Umzug, SequelizeStorage } from 'umzug';
 import path from 'path';
-
 import { fileURLToPath, pathToFileURL } from 'url';
-
+import config from './src/config/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'dev.db', // todo fix this to use sequelize config + env file
+    storage: config.env!="TEST"?config.database.path:config.database.test,
 });
 
 const [, , command, seed] = process.argv;
