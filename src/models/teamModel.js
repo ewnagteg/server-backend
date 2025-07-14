@@ -52,7 +52,7 @@ export async function getStats() {
 
 export async function getTeamStats(userId) {
     const query = `
-      SELECT 
+        SELECT 
             profiles.username,
             Players.name,
             team_players.player_id,

@@ -56,8 +56,8 @@ export async function getStats(req, res) {
 }
 
 export async function getTeamStats(req, res) {
-    const userId = req.auth.sub;
     try {
+        const userId = req.auth.sub;
         const stats = await teamModel.getTeamStats(userId);
         res.json(stats);
     } catch (err) {
