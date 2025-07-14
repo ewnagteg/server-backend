@@ -8,8 +8,8 @@ const __dirname = path.dirname(__filename);
 
 // it works i guess
 const dbPath = config.env === 'test'
-  ? path.resolve(__dirname, config.database.test)
-  : path.resolve(__dirname, config.database.path);
+  ? path.resolve(__dirname, '../../', config.database.test)
+  : path.resolve(__dirname, '../../', config.database.path);
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: dbPath,
