@@ -66,7 +66,7 @@ export async function getTeamStats(userId) {
         GROUP BY profiles.username, team_players.player_id;
     `;
     try {
-        const rows = await db.all(query [userId]);
+        const rows = await db.all(query, [userId]);
         return rows;
     } catch (err) {
         console.error('Failed to fetch team stats:', err);
