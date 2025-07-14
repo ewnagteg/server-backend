@@ -12,7 +12,7 @@ export async function addPlayerToTeam(userId, playerId) {
     const currentCost= await teamModel.getCost(userId);
     const playerCost = await playerModel.getCost(playerId);
 
-    if (!playerCost || !currentCost) {
+    if (playerCost == null || currentCost == null) {
         throw new Error('Player not found');
     }
 
