@@ -59,14 +59,15 @@ export async function getTeamStats(userId) {
             profiles.username,
             Players.name,
             team_players.player_id,
-        COALESCE(SUM(matches.kills), 0) AS total_kills
+            UserGroup.groupid,
+            COALESCE(SUM(matches.kills), 0) AS total_kills
         FROM team_players
         JOIN Players ON Players.player_id = team_players.player_id
         LEFT JOIN matches ON team_players.player_id = matches.player_id
         JOIN profiles ON team_players.user_id = profiles.user_id
         JOIN UserGroup ON UserGroup.userid = team_players.user_id
         WHERE UserGroup.userid = ?
-        GROUP BY profiles.username, team_players.player_id;
+        GROUP BY profiles.username, Players.name, team_players.player_id, UserGroup.groupid;
     `;
     try {
         const rows = await db.all(query, [userId]);
