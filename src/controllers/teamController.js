@@ -47,7 +47,8 @@ export async function getTeam(req, res) {
 
 export async function getStats(req, res) {
     try {
-        const stats = await teamModel.getStats();
+        const userId = req.auth.sub;
+        const stats = await teamModel.getStats(userId);
         res.json(stats);
     } catch (err) {
         console.error('DB error:', err);

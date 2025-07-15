@@ -28,21 +28,24 @@ export async function getCost(userId) {
     }
 }
 
-export async function getStats() {
+export async function getStats(userId) {
     const query = `
       SELECT 
         profiles.username,
         match_info.match_date,
         matches.match_id,
+        UserGroup.groupid,
         SUM(matches.kills) AS total_kills
       FROM team_players
       JOIN matches ON team_players.player_id = matches.player_id
       JOIN match_info ON matches.match_id = match_info.match_id
       JOIN profiles ON team_players.user_id = profiles.user_id
-      GROUP BY profiles.username, match_info.match_date, matches.match_id;
+      JOIN UserGroup ON UserGroup.userid = team_players.user_id
+        WHERE UserGroup.userid = ?
+      GROUP BY profiles.username, match_info.match_date, matches.match_id, UserGroup.groupid;
     `;
     try {
-        const rows = await db.all(query);
+        const rows = await db.all(query, [userId]);
         return rows;
     } catch (err) {
         console.error('Failed to fetch team stats:', err);
