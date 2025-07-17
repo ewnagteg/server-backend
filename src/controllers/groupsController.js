@@ -8,7 +8,7 @@ export async function createGroup(req, res) {
     try {
         const userId = req.auth.sub;
         const { name } = req.body;
-        const inviteNumber = Date.now().toString();
+        const inviteNumber = (Math.floor(Math.random() * 10000) + 1).toString();
         const joined = await UserGroup.findAll({ where: { userid: userId } });
         if (joined.length > config.vl.maxGroups) {
             res.status(403).json({ success: false, error: "Cant join group, at max" });
