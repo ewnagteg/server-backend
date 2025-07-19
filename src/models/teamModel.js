@@ -66,7 +66,11 @@ export async function getTeamStats(userId) {
         LEFT JOIN matches ON team_players.player_id = matches.player_id
         JOIN profiles ON team_players.user_id = profiles.user_id
         JOIN UserGroup ON UserGroup.userid = team_players.user_id
-        WHERE UserGroup.userid = ?
+        WHERE UserGroup.groupid IN (
+            SELECT groupid
+            FROM UserGroup
+            WHERE userid = ?
+        )
         GROUP BY profiles.username, Players.name, team_players.player_id;
     `;
     try {
