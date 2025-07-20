@@ -20,6 +20,7 @@
     "express-rate-limit": "^7.5.0",
     "jwks-rsa": "^3.2.0",
     "jwt-decode": "^4.0.0",
+    "node-cache": "^5.1.2",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7",
     "umzug": "^3.8.2"
