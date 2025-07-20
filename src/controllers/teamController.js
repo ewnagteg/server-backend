@@ -42,6 +42,10 @@ export async function getTeams(req, res) {
 export async function getTeam(req, res) {
     try {
         const userId = req.auth.sub;
+        const cacheKey = `getTeam_${userId}`;
+        const cached = cache.get(cacheKey);
+        if (cached) return res.json(cached);
+        
         const teams = await teamModel.getTeam(userId);
         res.json(teams);
     } catch (err) {
@@ -52,12 +56,11 @@ export async function getTeam(req, res) {
 
 export async function getStats(req, res) {
     try {
-
+        const userId = req.auth.sub;
         const cacheKey = `getStats_${userId}`;
         const cached = cache.get(cacheKey);
         if (cached) return res.json(cached);
 
-        const userId = req.auth.sub;
         const stats = await teamModel.getStats(userId);
         res.json(stats);
     } catch (err) {
