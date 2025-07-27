@@ -51,6 +51,8 @@ export async function getMatches(req, res) {
     }
 }
 
+// used by python script to check if matches were uploaded
+// hence dont cache this
 export async function getMatchesData(req, res) {
     try {
 
