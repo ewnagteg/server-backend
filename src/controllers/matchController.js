@@ -9,7 +9,7 @@ export async function getMatch(req, res) {
             include: [{
                 model: MatchInfo,
                 required: false
-            }], 
+            }],
             where: { match_id: matchId }
         });
 
@@ -32,6 +32,20 @@ export async function getMatches(req, res) {
                 model: MatchInfo,
                 required: false
             }]
+        });
+
+        res.json({ success: true, matches: matches });
+
+    } catch (err) {
+        console.error('Failed to fetch matches:', err);
+        res.status(500).json({ error: 'Failed to fetch matches.' });
+    }
+}
+
+export async function getMatchesData(req, res) {
+    try {
+
+        const matches = await Match.findAll({
         });
 
         res.json({ success: true, matches: matches });
