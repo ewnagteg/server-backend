@@ -27,8 +27,24 @@ describe('Match Routes', () => {
 
         expect(response.body).toHaveProperty('match');
         expect(response.body.match).toEqual([
-            { "kills": 6, "match_id": 1, "player_id": 1 },
-            { "kills": 5, "match_id": 1, "player_id": 2 }
+            {
+                "MatchInfo": {
+                    "match_date": "1",
+                    "match_id": 1,
+                    "team1": "G2",
+                    "team2": "Sentinels",
+                },
+                "kills": 6, "match_id": 1, "player_id": 1
+            },
+            {
+                "MatchInfo": {
+                    "match_date": "1",
+                    "match_id": 1,
+                    "team1": "G2",
+                    "team2": "Sentinels",
+                },
+                "kills": 5, "match_id": 1, "player_id": 2
+            }
         ]);
     });
 
@@ -42,8 +58,24 @@ describe('Match Routes', () => {
 
         expect(response.body).toHaveProperty('matches');
         expect(response.body.matches).toEqual([
-            { "kills": 6, "match_id": 1, "player_id": 1 },
-            { "kills": 5, "match_id": 1, "player_id": 2 }
+            {
+                "MatchInfo": {
+                    "match_date": "1",
+                    "match_id": 1,
+                    "team1": "G2",
+                    "team2": "Sentinels",
+                },
+                "kills": 6, "match_id": 1, "player_id": 1
+            },
+            {
+                "MatchInfo": {
+                    "match_date": "1",
+                    "match_id": 1,
+                    "team1": "G2",
+                    "team2": "Sentinels",
+                },
+                "kills": 5, "match_id": 1, "player_id": 2
+            }
         ]);
     });
 
@@ -57,7 +89,7 @@ describe('Match Routes', () => {
 
         expect(response.body).toHaveProperty('matches');
         expect(response.body.matches).toEqual([
-            {"kills": 6, "match_id": 1, "player_id": 1}
+            { "kills": 6, "match_id": 1, "player_id": 1 }
         ]);
     });
 });
