@@ -1,11 +1,18 @@
 import Match from '../models/match.js';
+import MatchInfo from '../models/matchInfo.js';
+import '../models/associations.js';
 
 export async function getMatch(req, res) {
     try {
         const { matchId } = req.params;
         const match = await Match.findAll({
+            include: [{
+                model: MatchInfo,
+                required: false
+            }], 
             where: { match_id: matchId }
         });
+
         if (!match) {
             return res.status(404).json({ success: false, error: "Match not found" });
         }
@@ -20,7 +27,12 @@ export async function getMatch(req, res) {
 export async function getMatches(req, res) {
     try {
 
-        const matches = await Match.findAll({});
+        const matches = await Match.findAll({
+            include: [{
+                model: MatchInfo,
+                required: false
+            }]
+        });
 
         res.json({ success: true, matches: matches });
 

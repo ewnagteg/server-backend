@@ -1,6 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../database/sequelize.js';
-import e from 'express';
 
 
 class Match extends Model { }
