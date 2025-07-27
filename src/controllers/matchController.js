@@ -1,10 +1,16 @@
 import Match from '../models/match.js';
 import MatchInfo from '../models/matchInfo.js';
 import '../models/associations.js';
+import cache from '../cache.js';
 
 export async function getMatch(req, res) {
     try {
         const { matchId } = req.params;
+        const cacheKey = `getMatch: ${matchId}`;
+        const cached = cache.get(cacheKey);
+        if (cached) return res.json(cached);
+
+
         const match = await Match.findAll({
             include: [{
                 model: MatchInfo,
@@ -26,6 +32,9 @@ export async function getMatch(req, res) {
 
 export async function getMatches(req, res) {
     try {
+        const cacheKey = `getMatches`;
+        const cached = cache.get(cacheKey);
+        if (cached) return res.json(cached);
 
         const matches = await Match.findAll({
             include: [{
@@ -59,6 +68,9 @@ export async function getMatchesData(req, res) {
 export async function getPlayerMatches(req, res) {
     try {
         const { playerId } = req.params;
+        const cacheKey = `getPlayerMatches: ${playerId}`;
+        const cached = cache.get(cacheKey);
+        if (cached) return res.json(cached);
 
         const matches = await Match.findAll({
             where: { player_id: playerId }
