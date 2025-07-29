@@ -34,6 +34,11 @@ describe('Match Routes', () => {
                     "team1": "G2",
                     "team2": "Sentinels",
                 },
+                "Player": {
+                    "cost": 6,
+                    "name": "leaf",
+                    "player_id": 1,
+                },
                 "kills": 6, "match_id": 1, "player_id": 1
             },
             {
@@ -42,6 +47,11 @@ describe('Match Routes', () => {
                     "match_id": 1,
                     "team1": "G2",
                     "team2": "Sentinels",
+                },
+                "Player": {
+                    "cost": 5,
+                    "name": "babybay",
+                    "player_id": 2,
                 },
                 "kills": 5, "match_id": 1, "player_id": 2
             }
@@ -65,6 +75,11 @@ describe('Match Routes', () => {
                     "team1": "G2",
                     "team2": "Sentinels",
                 },
+                "Player": {
+                    "cost": 6,
+                    "name": "leaf",
+                    "player_id": 1,
+                },
                 "kills": 6, "match_id": 1, "player_id": 1
             },
             {
@@ -73,6 +88,11 @@ describe('Match Routes', () => {
                     "match_id": 1,
                     "team1": "G2",
                     "team2": "Sentinels",
+                },
+                "Player": {
+                    "cost": 5,
+                    "name": "babybay",
+                    "player_id": 2,
                 },
                 "kills": 5, "match_id": 1, "player_id": 2
             }

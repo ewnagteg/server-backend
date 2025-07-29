@@ -1,5 +1,6 @@
 import Match from '../models/match.js';
 import MatchInfo from '../models/matchInfo.js';
+import Player from '../models/playersqModel.js';
 import '../models/associations.js';
 import cache from '../cache.js';
 
@@ -14,7 +15,10 @@ export async function getMatch(req, res) {
         const match = await Match.findAll({
             include: [{
                 model: MatchInfo,
-                required: false
+                as: 'MatchInfo'
+            }, {
+                model: Player,
+                as: 'Player'
             }],
             where: { match_id: matchId }
         });
@@ -39,8 +43,11 @@ export async function getMatches(req, res) {
         const matches = await Match.findAll({
             include: [{
                 model: MatchInfo,
-                required: false
-            }]
+                as: 'MatchInfo'
+            }, {
+                model: Player,
+                as: 'Player'
+            }],
         });
 
         res.json({ success: true, matches: matches });
