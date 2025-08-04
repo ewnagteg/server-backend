@@ -4,7 +4,4 @@ const result = dotenv.config();
 // need this to prevent node from hoisting db above loading env
 if (result.error) {
     console.error('Failed to load .env:', result.error);
-} else {
-    console.log('Loaded env vars');
 }
-  

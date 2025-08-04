@@ -28,21 +28,28 @@ export async function getCost(userId) {
     }
 }
 
-export async function getStats() {
+export async function getStats(userId) {
     const query = `
       SELECT 
         profiles.username,
         match_info.match_date,
         matches.match_id,
+        GROUP_CONCAT(DISTINCT UserGroup.groupid) AS groupids,
         SUM(matches.kills) AS total_kills
       FROM team_players
       JOIN matches ON team_players.player_id = matches.player_id
       JOIN match_info ON matches.match_id = match_info.match_id
       JOIN profiles ON team_players.user_id = profiles.user_id
+      JOIN UserGroup ON UserGroup.userid = team_players.user_id
+        WHERE UserGroup.groupid IN (
+            SELECT groupid
+            FROM UserGroup
+            WHERE userid = ?
+        )
       GROUP BY profiles.username, match_info.match_date, matches.match_id;
     `;
     try {
-        const rows = await db.all(query);
+        const rows = await db.all(query, [userId]);
         return rows;
     } catch (err) {
         console.error('Failed to fetch team stats:', err);
@@ -50,21 +57,28 @@ export async function getStats() {
     }
 }
 
-export async function getTeamStats() {
+export async function getTeamStats(userId) {
     const query = `
-      SELECT 
-        profiles.username,
-        Players.name,
-        team_players.player_id,
-        SUM(matches.kills) AS total_kills
-      FROM team_players
-      JOIN Players ON Players.player_id = team_players.player_id
-      JOIN matches ON team_players.player_id = matches.player_id
-      JOIN profiles ON team_players.user_id = profiles.user_id
-      GROUP BY profiles.username, team_players.player_id;
+        SELECT 
+            profiles.username,
+            Players.name,
+            team_players.player_id,
+            GROUP_CONCAT(DISTINCT UserGroup.groupid) AS groupids,
+            COALESCE(SUM(matches.kills), 0) AS total_kills
+        FROM team_players
+        JOIN Players ON Players.player_id = team_players.player_id
+        LEFT JOIN matches ON team_players.player_id = matches.player_id
+        JOIN profiles ON team_players.user_id = profiles.user_id
+        JOIN UserGroup ON UserGroup.userid = team_players.user_id
+        WHERE UserGroup.groupid IN (
+            SELECT groupid
+            FROM UserGroup
+            WHERE userid = ?
+        )
+        GROUP BY profiles.username, Players.name, team_players.player_id;
     `;
     try {
-        const rows = await db.all(query);
+        const rows = await db.all(query, [userId]);
         return rows;
     } catch (err) {
         console.error('Failed to fetch team stats:', err);

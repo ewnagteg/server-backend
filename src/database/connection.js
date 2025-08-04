@@ -3,7 +3,6 @@ import config from '../config/index.js';
 
 class Database {
   constructor() {
-    console.log('Connecting to database:');
     this.db = new sqlite3.Database(config.database.path);
   }
 

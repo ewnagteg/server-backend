@@ -1,4 +1,5 @@
 import * as playerStatsModel from '../models/playerStatsModel.js';
+import cache from '../cache.js';
 
 export async function addPlayerStats(req, res) {
     try {
@@ -13,6 +14,10 @@ export async function addPlayerStats(req, res) {
 
 export async function getPlayerStatsTable(req, res) {    
     try {
+        const cacheKey = `getPlayerStatsTable`;
+        const cached = cache.get(cacheKey);
+        if (cached) return res.json(cached);
+        
         const stats = await playerStatsModel.getPlayerStatsTable();
         res.json(stats);
     } catch (err) {

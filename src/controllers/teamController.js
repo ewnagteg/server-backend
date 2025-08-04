@@ -1,5 +1,6 @@
 import * as teamService from '../services/teamService.js';
 import * as teamModel from '../models/teamModel.js';
+import cache from '../cache.js';
 
 export async function addPlayer(req, res) {
     const userId = req.auth.sub;
@@ -26,6 +27,10 @@ export async function deletePlayer(req, res) {
 
 export async function getTeams(req, res) {
     try {
+        const cacheKey = `getTeams`;
+        const cached = cache.get(cacheKey);
+        if (cached) return res.json(cached);
+
         const teams = await teamModel.findAll();
         res.json(teams);
     } catch (err) {
@@ -37,6 +42,10 @@ export async function getTeams(req, res) {
 export async function getTeam(req, res) {
     try {
         const userId = req.auth.sub;
+        const cacheKey = `getTeam_${userId}`;
+        const cached = cache.get(cacheKey);
+        if (cached) return res.json(cached);
+        
         const teams = await teamModel.getTeam(userId);
         res.json(teams);
     } catch (err) {
@@ -47,7 +56,12 @@ export async function getTeam(req, res) {
 
 export async function getStats(req, res) {
     try {
-        const stats = await teamModel.getStats();
+        const userId = req.auth.sub;
+        const cacheKey = `getStats_${userId}`;
+        const cached = cache.get(cacheKey);
+        if (cached) return res.json(cached);
+
+        const stats = await teamModel.getStats(userId);
         res.json(stats);
     } catch (err) {
         console.error('DB error:', err);
@@ -57,7 +71,12 @@ export async function getStats(req, res) {
 
 export async function getTeamStats(req, res) {
     try {
-        const stats = await teamModel.getTeamStats();
+        const userId = req.auth.sub;
+        const cacheKey = `getTeamStats_${userId}`;
+        const cached = cache.get(cacheKey);
+        if (cached) return res.json(cached);
+
+        const stats = await teamModel.getTeamStats(userId);
         res.json(stats);
     } catch (err) {
         console.error('DB error:', err);
