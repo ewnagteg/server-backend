@@ -42,7 +42,7 @@ Backend services for the spatial note-taking application, handling note persiste
 ## Tech Stack
 
 - **Runtime**: Node.js with Express.js framework
-- **Database**: SQLite with custom query optimization
+- **Database**: Sequelize and SQLite with custom query optimization
 - **Authentication**: Auth0 JWT verification and user management
 - **Process Management**: PM2 for production deployment and monitoring
 - **Testing**: Jest with comprehensive unit and integration tests
@@ -52,7 +52,7 @@ Backend services for the spatial note-taking application, handling note persiste
 ## Development Features
 
 - **Environment Configuration**: Separate dev/staging/production environments
-- **Database Migrations**: Version-controlled schema management
+- **Database Migrations**: Sequelize controlled schema management
 - **API Documentation**: Comprehensive endpoint documentation
 - **Error Handling**: Structured error responses and logging
 - **Performance Monitoring**: Request timing and database query optimization
@@ -60,11 +60,19 @@ Backend services for the spatial note-taking application, handling note persiste
 ## Available Scripts
 
 ### `npm start`
-Starts the development server on localhost with hot reloading
+Starts the development server on localhost
 
 ### `npm test`
-Runs the Jest test suite
+Runs the Jest test suite.
 
+### `node migrate.js up`
+Runs any pending Sequelize migrations.
+
+### `node migrate.js down`
+Rolls back the latest Sequelize migration.
+
+### `node migrate.js up seed`
+Runs database seeders after applying migrations.
 
 ## API Security
 
